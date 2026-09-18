@@ -1,0 +1,28 @@
+﻿version: '3.8'
+services:
+  gridwise:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: gridwise-optimizer:latest
+    container_name: gridwise-optimizer
+    ports:
+      - "8000:8000"
+    # API keys and provider selection are read from the host environment by
+    # default. Set OPENAI_API_KEY, GEMINI_API_KEY, or ANTHROPIC_API_KEY in
+    # your shell, or copy backend/.env.example to backend/.env and uncomment
+    # the env_file line below. The image never bakes secrets in.
+    environment:
+      - LLM_PROVIDER=${LLM_PROVIDER:-auto}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+    # env_file:
+    #   - ./backend/.env
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 5s

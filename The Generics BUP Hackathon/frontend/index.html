@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GridWise — Synthetic Energy Grid Management</title>
+  <meta name="description" content="Nothing / CMF inspired intelligent 24-hour energy grid optimization system powered by LLM directive interpretation and linear programming." />
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%23000'/><circle cx='30' cy='30' r='8' fill='%23ff4400'/><circle cx='70' cy='30' r='8' fill='%23fff'/><circle cx='30' cy='70' r='8' fill='%23fff'/><circle cx='70' cy='70' r='8' fill='%23d6ff3a'/></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <!-- Perforated dot matrix background overlay -->
+  <div class="dot-matrix-bg" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="glyph-logo" aria-hidden="true">
+        <span class="gl-dot acc-orange"></span>
+        <span class="gl-dot"></span>
+        <span class="gl-dot"></span>
+        <span class="gl-dot"></span>
+        <span class="gl-dot acc-lime"></span>
+        <span class="gl-dot"></span>
+      </div>
+      <div class="brand-meta">
+        <div class="brand-title">GRIDWISE <span class="badge-red">(01)</span></div>
+        <div class="brand-sub">// ENERGY DISPATCH SYSTEM · CMF.OS</div>
+      </div>
+    </div>
+
+    <nav class="nav-links">
+      <a href="#compose" class="nav-link active">CONTROL</a>
+      <a href="#directives" class="nav-link">DIRECTIVES</a>
+      <a href="#schedule" class="nav-link">SCHEDULE</a>
+      <a href="#analytics" class="nav-link">ANALYTICS</a>
+      <a href="#apidocs" class="nav-link">API</a>
+    </nav>
+
+    <div class="sys-status">
+      <div class="status-indicator">
+        <span class="status-pip" id="sys-pip"></span>
+        <span class="status-text" id="sys-label">SYS_ONLINE</span>
+      </div>
+      <div class="model-badge" id="model-badge">LLM: AUTO</div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- ───────── SECTION: HERO / CONTROL BENCH ───────── -->
+    <section class="bento-hero" id="compose">
+      <div class="hero-header">
+        <div class="tag-row">
+          <span class="cmf-tag">// INTELLIGENT DISPATCH</span>
+          <span class="cmf-tag">24-HR PROFILE</span>
+          <span class="cmf-tag accent-lime-text">LP_SOLVER: READY</span>
+        </div>
+        <h1 class="hero-title">
+          SYNTHETIC GRID<br />
+          <span class="text-gradient">OPTIMIZER</span>
+        </h1>
+        <p class="hero-desc">
+          Converts unconstrained operator notes into verified JSON directives via LLM,
+          applies strict deterministic guardrails, and executes global cost minimization
+          for battery storage, rooftop solar, and grid tariff arbitrage.
+        </p>
+
+        <!-- Preset Quick Bar -->
+        <div class="preset-strip">
+          <span class="preset-label">PRESETS:</span>
+          <button class="preset-pill active" id="btn-preset-cleaning">Solar Cleaning</button>
+          <button class="preset-pill" id="btn-preset-paraphrased">Paraphrased</button>
+          <button class="preset-pill" id="btn-preset-basic">Baseline (No Notes)</button>
+          <button class="preset-pill" id="btn-preset-peak">Peak Shaving</button>
+          <button class="preset-pill" id="btn-preset-curtail">Grid Curtailment</button>
+        </div>
+      </div>
+
+      <!-- Bento Grid Input Workspace -->
+      <div class="bento-grid">
+        <!-- Card 1: Operator Notes (LLM Input) -->
+        <div class="bento-card col-span-7">
+          <div class="card-header">
+            <div class="card-title-group">
+              <span class="card-index">01</span>
+              <h3>OPERATOR NOTES</h3>
+            </div>
+            <span class="card-sub-info">NATURAL LANGUAGE · 1–3 ENTRIES</span>
+          </div>
+          <div class="card-content">
+            <div class="notes-field-wrap">
+              <textarea id="operator-notes" rows="4" spellcheck="false" placeholder="Enter operator notes (one per line)...&#10;e.g. Facilities will wash the rooftop solar panels from noon until 2 PM. Usable solar should be treated as 25% of forecast.&#10;Do not charge the battery between 6 PM and 9 PM.&#10;Keep a minimum battery reserve of 6 kWh at all times."></textarea>
+            </div>
+            <div class="quick-inserts flex-between">
+              <div class="chips-group">
+                <span class="insert-label">QUICK INSERT:</span>
+                <button class="chip-btn" data-insert="Facilities will wash rooftop solar from noon to 2pm; solar output is 25% of forecast.">+ Solar Cleaning</button>
+                <button class="chip-btn" data-insert="Do not charge battery between 6 PM and 9 PM.">+ No Charge 18-21</button>
+                <button class="chip-btn" data-insert="Hold at least 6 kWh reserve stored in the battery.">+ Min Reserve 6kWh</button>
+                <button class="chip-btn" data-insert="Limit grid draw to at most 4 kWh between 17:00 and 21:00.">+ Max Grid Cap</button>
+              </div>
+              <button class="btn-cmf-primary btn-compact" id="btn-send-notes">
+                <span class="btn-dot"></span>
+                SEND & OPTIMIZE
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Battery Specifications -->
+        <div class="bento-card col-span-5">
+          <div class="card-header">
+            <div class="card-title-group">
+              <span class="card-index">02</span>
+              <h3>BATTERY SPECS</h3>
+            </div>
+            <span class="card-sub-info">PHYSICAL CONSTRAINTS</span>
+          </div>
+          <div class="card-content battery-controls">
+            <div class="control-row">
+              <label for="bat-capacity">Capacity (kWh)</label>
+              <input type="number" id="bat-capacity" value="20" min="1" max="500" step="1" />
+            </div>
+            <div class="control-row">
+              <label for="bat-initial">Initial Energy (kWh)</label>
+              <input type="number" id="bat-initial" value="10" min="0" max="500" step="0.5" />
+            </div>
+            <div class="control-row">
+              <label for="bat-min-reserve">Min Reserve (kWh)</label>
+              <input type="number" id="bat-min-reserve" value="4" min="0" max="500" step="0.5" />
+            </div>
+            <div class="control-row">
+              <label for="bat-charge-limit">Charge Limit (kW)</label>
+              <input type="number" id="bat-charge-limit" value="5" min="0.1" max="100" step="0.5" />
+            </div>
+            <div class="control-row">
+              <label for="bat-discharge-limit">Discharge Limit (kW)</label>
+              <input type="number" id="bat-discharge-limit" value="5" min="0.1" max="100" step="0.5" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Hourly Scenario Data & Dispatch Action -->
+        <div class="bento-card col-span-12">
+          <div class="card-header flex-between">
+            <div class="card-title-group">
+              <span class="card-index">03</span>
+              <h3>HOURLY DEMAND, SOLAR & TARIFF PROFILE</h3>
+            </div>
+            <div class="profile-actions">
+              <span class="text-dim mono" id="scenario-id-tag">ID: case-solar-cleaning</span>
+              <button class="btn-micro" id="btn-toggle-hours-raw">EDIT CSV</button>
+            </div>
+          </div>
+          <div class="card-content">
+            <!-- 24-hr Mini Bar Visualizer -->
+            <div class="hours-preview-strip" id="hours-preview-strip"></div>
+            
+            <div class="hours-raw-container hidden" id="hours-raw-container">
+              <textarea id="hours-csv" rows="6" spellcheck="false" placeholder="hour,demand,solar,tariff (one row per line)"></textarea>
+            </div>
+
+            <div class="dispatch-bar">
+              <div class="dispatch-meta">
+                <span class="dot-live"></span>
+                <span>GUARDRAILS: DETERMINISTIC VALIDATION ACTIVE</span>
+              </div>
+              <button class="btn-cmf-primary" id="btn-dispatch">
+                <span class="btn-dot"></span>
+                OPTIMIZE ENERGY DISPATCH
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────── SECTION: DIRECTIVE INTERPRETATION ───────── -->
+    <section class="block-section" id="directives">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <span class="sec-number">01</span>
+          <h2>DIRECTIVE INTERPRETATION</h2>
+        </div>
+        <p class="section-sub">// STRUCTURED JSON OUTPUT · 1:1 NOTE RESOLUTION</p>
+      </div>
+
+      <div class="directives-grid" id="directives-list">
+        <div class="empty-state">
+          <div class="empty-dot"></div>
+          <p>No optimization run yet. Click <strong>OPTIMIZE ENERGY DISPATCH</strong> to process operator notes with the LLM.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────── SECTION: 24-HOUR DISPATCH SCHEDULE ───────── -->
+    <section class="block-section" id="schedule">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <span class="sec-number">02</span>
+          <h2>24-HOUR DISPATCH SCHEDULE</h2>
+        </div>
+        <p class="section-sub">// STRICT ENERGY BALANCE & BATTERY NEUTRALITY AUDIT</p>
+      </div>
+
+      <!-- KPI Metric Cards -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <span class="kpi-label">TOTAL GRID ENERGY</span>
+          <div class="kpi-val" id="kpi-grid">— <span class="kpi-unit">kWh</span></div>
+          <div class="kpi-foot" id="kpi-peak-grid">Peak: — kWh</div>
+        </div>
+        <div class="kpi-card accent-card">
+          <span class="kpi-label">TOTAL ELECTRICITY COST</span>
+          <div class="kpi-val highlight" id="kpi-cost">— <span class="kpi-unit">BDT</span></div>
+          <div class="kpi-foot" id="kpi-savings">Savings vs Base: —</div>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">SOLAR UTILIZED</span>
+          <div class="kpi-val text-yellow" id="kpi-solar">— <span class="kpi-unit">kWh</span></div>
+          <div class="kpi-foot" id="kpi-solar-ratio">Generation used</div>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">BATTERY THROUGHPUT</span>
+          <div class="kpi-val text-cyan" id="kpi-battery">— <span class="kpi-unit">kWh</span></div>
+          <div class="kpi-foot" id="kpi-neutrality">Neutrality: Verified</div>
+        </div>
+      </div>
+
+      <!-- Table Container -->
+      <div class="table-container">
+        <div class="table-toolbar">
+          <span class="table-title">HOURLY DISPATCH MATRIX (00:00 – 23:00)</span>
+          <button class="btn-micro" id="btn-export-csv">EXPORT CSV</button>
+        </div>
+        <table class="cmf-table" id="schedule-table">
+          <thead>
+            <tr>
+              <th>HOUR</th>
+              <th>DEMAND</th>
+              <th>SOLAR USED</th>
+              <th>GRID IMPORT</th>
+              <th>BATTERY CHARGE</th>
+              <th>BATTERY DISCHARGE</th>
+              <th>SOC (END)</th>
+              <th>TARIFF</th>
+              <th>COST</th>
+            </tr>
+          </thead>
+          <tbody id="schedule-tbody">
+            <tr class="empty-row"><td colspan="9">Execute optimization to render 24-hour schedule.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ───────── SECTION: ANALYTICS & VISUAL DIAGNOSTICS ───────── -->
+    <section class="block-section" id="analytics">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <span class="sec-number">03</span>
+          <h2>VISUAL DIAGNOSTICS & CHARTS</h2>
+        </div>
+        <p class="section-sub">// ENERGY FLOWS · BATTERY STATE OF CHARGE · TARIFF ARBITRAGE</p>
+      </div>
+
+      <div class="charts-grid">
+        <!-- Chart 1: Energy Mix Stacked Bar -->
+        <div class="chart-card col-span-6">
+          <div class="chart-header">
+            <div>
+              <h4>ENERGY SUPPLY MIX</h4>
+              <span class="chart-sub">Hourly contribution to demand (kWh)</span>
+            </div>
+            <div class="legend">
+              <span class="leg-item"><i class="leg-box solar"></i>Solar</span>
+              <span class="leg-item"><i class="leg-box battery"></i>Battery</span>
+              <span class="leg-item"><i class="leg-box grid"></i>Grid</span>
+            </div>
+          </div>
+          <div class="chart-canvas-wrap">
+            <div class="stacked-bar-chart" id="chart-energy-mix"></div>
+          </div>
+        </div>
+
+        <!-- Chart 2: Battery State of Charge Trajectory -->
+        <div class="chart-card col-span-6">
+          <div class="chart-header">
+            <div>
+              <h4>BATTERY SOC TRAJECTORY</h4>
+              <span class="chart-sub">Stored energy over 24h & reserve threshold (kWh)</span>
+            </div>
+            <div class="legend">
+              <span class="leg-item"><i class="leg-line soc"></i>SOC</span>
+              <span class="leg-item"><i class="leg-line min-reserve"></i>Min Floor</span>
+            </div>
+          </div>
+          <div class="chart-canvas-wrap">
+            <div class="soc-chart-canvas" id="chart-soc-canvas"></div>
+          </div>
+        </div>
+
+        <!-- Chart 3: Tariff Arbitrage & Grid Purchase -->
+        <div class="chart-card col-span-12">
+          <div class="chart-header">
+            <div>
+              <h4>TARIFF VS. GRID PURCHASE & BATTERY ACTION</h4>
+              <span class="chart-sub">Grid consumption aligned with lowest tariff windows (BDT/kWh)</span>
+            </div>
+            <div class="legend">
+              <span class="leg-item"><i class="leg-box tariff"></i>Tariff (BDT)</span>
+              <span class="leg-item"><i class="leg-box grid-bar"></i>Grid Draw</span>
+            </div>
+          </div>
+          <div class="chart-canvas-wrap">
+            <div class="arbitrage-chart-canvas" id="chart-arbitrage-canvas"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────── SECTION: API CONTRACT & PLAYGROUND ───────── -->
+    <section class="block-section" id="apidocs">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <span class="sec-number">04</span>
+          <h2>HTTP API CONTRACT</h2>
+        </div>
+        <p class="section-sub">// PUBLIC INTERFACES · REPRODUCIBLE ENDPOINTS</p>
+      </div>
+
+      <div class="api-grid">
+        <div class="api-card">
+          <div class="api-badge-row">
+            <span class="http-badge get">GET</span>
+            <code>/health</code>
+            <button class="btn-micro" id="btn-test-health">TEST LIVE</button>
+          </div>
+          <p class="api-desc">Readiness check for automated scoring & load balancers.</p>
+          <pre class="code-block"><code>{ "status": "ok" }</code></pre>
+        </div>
+
+        <div class="api-card">
+          <div class="api-badge-row">
+            <span class="http-badge post">POST</span>
+            <code>/optimize-energy</code>
+            <button class="btn-micro" id="btn-copy-curl">COPY CURL</button>
+            <button class="btn-micro" id="btn-test-optimize">TEST LIVE</button>
+          </div>
+          <p class="api-desc">Main endpoint: natural language notes + 24-hr scenario &rarr; structured directives + optimal schedule.</p>
+          <pre class="code-block" id="curl-preview"><code>curl -X POST http://localhost:8000/optimize-energy \
+  -H "Content-Type: application/json" \
+  -d @samples/case_solar_cleaning.json</code></pre>
+        </div>
+      </div>
+
+      <!-- Live Test Result Panel -->
+      <div class="api-test-panel" id="api-test-panel" hidden>
+        <div class="api-test-panel-head">
+          <span class="cmf-tag accent-lime-text">// LIVE RESPONSE</span>
+          <span class="api-test-meta" id="api-test-meta"></span>
+          <button class="btn-micro" id="api-test-close">CLOSE</button>
+        </div>
+        <pre class="api-test-output"><code id="api-test-output">// awaiting request…</code></pre>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-dots" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="footer-text">
+      <strong>GRIDWISE</strong> · BUP HACKATHON 2026 · INDUSTRIAL DESIGN BY NOTHING / CMF INSPIRATION
+    </div>
+  </footer>
+
+  <div class="cmf-toast" id="toast"></div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
+

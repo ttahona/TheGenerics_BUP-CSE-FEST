@@ -1,0 +1,9 @@
+﻿python.exe : C:\Users\USER\Downloads\BUP Hackathon\.venv\Scripts\python.exe: 
+No module named pytest
+At line:1 char:111
++ ...  'backend'; & './.venv/Scripts/python.exe' -m pytest -v tests/test_sm ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (C:\Users\USER\D...le named pytest 
+   :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
